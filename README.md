@@ -7,6 +7,7 @@ A simple URL shortener API built using FastAPI and SQLAlchemy with async support
 ##  Project Structure
 
 
+```
 url_shortener/
 ├── app/
 │   ├── __init__.py
@@ -15,9 +16,10 @@ url_shortener/
 │   ├── schemas.py
 │   ├── database.py
 │   └── utils.py
-|           
 ├── requirements.txt
 └── README.md
+```
+
 
 
 ##  Features
