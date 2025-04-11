@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends, HTTPException
+from fastapi import FastAPI, Depends, HTTPException, Request
 from fastapi.responses import RedirectResponse
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.future import select
@@ -7,6 +7,8 @@ from . import models, schemas, utils
 from .database import engine, Base, get_db
 from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi.middleware.cors import CORSMiddleware
+
+
 
 app = FastAPI()
 
@@ -27,12 +29,13 @@ async def index():
 
 
 @app.post("/shorten", response_model=schemas.URLInfo)
-async def shorten_url(url: schemas.URLCreate, db: AsyncSession = Depends(get_db)):
+async def shorten_url(url: schemas.URLCreate, request: Request, db: AsyncSession = Depends(get_db)):
     try:
         short_code = utils.generate_short_code()
         new_url = models.URL(short_code=short_code, long_url=url.long_url)
         db.add(new_url)
         await db.commit()
+      
 
         short_url = f"http://localhost:8000/{short_code}"
         return {"short_url": short_url}
